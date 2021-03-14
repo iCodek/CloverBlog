@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clover.blog.dao.BlogDao">
+
+    <resultMap id="Blog" type="com.clover.blog.entity.Blog" >
+        <id column="id" property="blogId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="blog_file" property="blogFile" jdbcType="VARCHAR" />
+        <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
+        <result column="tags" property="tags" typeHandler="com.clover.blog.utils.ListTypeHandler" />
+    </resultMap>
+
+    <select id="findBlogName" parameterType="String" resultType="String">
+        select blog_file from blog_info where id = #{blogId}
+    </select>
+
+    <select id="findBlogById" parameterType="String" resultMap="Blog">
+        select * from blog_info where id = #{blogId}
+    </select>
+
+    <select id="findBlogByUser" parameterType="String" resultMap="Blog">
+        select * from blog_info where user_id = #{userId} order by upload_time desc
+    </select>
+
+    <insert id="insertBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="blogId">
+        insert into blog_info(user_id,title,preview,blog_file,category,tags) values (#{userId},#{title},#{preview},#{blogFile},#{category},#{tags,jdbcType=OTHER,typeHandler=com.clover.blog.utils.ListTypeHandler})
+    </insert>
+
+    <update id="updateBlogView" parameterType="String">
+        update blog_info set views = views+1 where id = #{blogId}
+    </update>
+
+    <update id="addBlogLike" parameterType="String">
+        update blog_info set likes = likes+1 where id = #{blogId}
+    </update>
+
+    <update id="decBlogLike" parameterType="String">
+        update blog_info set likes = likes-1 where id = #{blogId} and likes > 0
+    </update>
+
+    <update id="updateBlogVisible">
+        update blog_info set visible = #{visible} where id = #{blogId}
+    </update>
+
+    <select id="findAll" parameterType="String" resultMap="Blog">
+        select * from blog_info
+    </select>
+</mapper>

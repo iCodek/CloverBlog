@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clover.blog.dao.UserDao">
+    <cache type="com.clover.blog.cache.RedisCache"/>
+    <resultMap id="User" type="com.clover.blog.entity.User" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="userName" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="user_bg" property="userBg" jdbcType="VARCHAR" />
+        <result column="user_top" property="userTop" jdbcType="VARCHAR" />
+        <result column="blog_count" property="blogCount" jdbcType="INTEGER" />
+        <result column="song" property="song" typeHandler="com.clover.blog.utils.ListTypeHandler" />
+        <result column="contact" property="contact" typeHandler="com.clover.blog.utils.MySqlJsonHandler" />
+    </resultMap>
+    <insert id="register" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(username,password,email,contact) values (#{userName},#{password},#{email},#{contact,jdbcType=OTHER,typeHandler=com.clover.blog.utils.MySqlJsonHandler})
+    </insert>
+
+    <select id="findByUserName" parameterType="String" resultType="String">
+        select id from user where username = #{userName}
+    </select>
+
+    <select id="findByUserID" parameterType="String" resultMap="User">
+        select * from user where id = #{id}
+    </select>
+
+    <update id="updateAvatar">
+        update user set avatar = #{path} where id = #{id}
+    </update>
+
+    <update id="updateBg">
+        update user set user_bg = #{path} where id = #{id}
+    </update>
+
+    <update id="updateTop">
+        update user set user_top = #{path} where id = #{id}
+    </update>
+
+    <update id="updateContact">
+        update user set contact = #{contact,jdbcType=OTHER,typeHandler=com.clover.blog.utils.MySqlJsonHandler} where id = #{id}
+    </update>
+
+    <update id="updateSong">
+        update user set song = #{song,jdbcType=OTHER,typeHandler=com.clover.blog.utils.ListTypeHandler} where id = #{id}
+    </update>
+
+    <update id="updateNotice" parameterType="String">
+        update user set notice = #{notice} where id = #{id}
+    </update>
+
+    <update id="updateApi" parameterType="String">
+        update user set api = #{api} where id = #{id}
+    </update>
+
+    <update id="updateBlogCount" parameterType="String">
+        update user set blog_count = blog_count+1 where id = #{id}
+    </update>
+
+    <update id="updateView" parameterType="String">
+        update user set views = views+1 where id = #{id}
+    </update>
+
+    <update id="updateUserName">
+        update user set username = #{userName} where id = #{id}
+    </update>
+
+    <select id="allUser" resultMap="User">
+        select id,username,blog_count,avatar,register_time from user order by blog_count desc,id asc
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+body {
+  height:100%;
+  cursor: url('../../assets/cursor.cur'), default;
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  width: 10px;
+   height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(153, 153, 153, 0.884);
+}
+html {
+  height:100%;
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  font-size: 40px;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --color: rgba(255, 255, 255, 1);
+  --opacity: 1;
+  --margin: 6;
+}
+a {
+  text-decoration: none;
+  color: rgb(60, 136, 236);
+}
+@keyframes imageAnimation {
+  0% {
+    background-image: url('https://www.luckyclover.top/blogs/0/imgs/g.jpg');
+  }
+  50% {
+    background-image: url('https://www.luckyclover.top/blogs/0/imgs/g2.jpg');
+  }
+  100% {
+    background-image: url('https://www.luckyclover.top/blogs/0/imgs/g.jpg');
+  }
+}
